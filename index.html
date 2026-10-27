@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@600;700&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
-/* Layout: phone-sized app on the left, credit rules and flow on the right; stacks to one column when narrow. */
+/* Layout: sticky phone-sized app on the left, collapsible design notes on the right; stacks to one column when narrow. */
 :root{
   color-scheme:light;
   --bg:#EEF1F4; --surface:#FFFFFF; --ink:#16233A; --muted:#5B677A; --line:#D5DCE5;
@@ -34,30 +34,35 @@
 [hidden]{display:none!important}
 img{max-width:100%}
 body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 var(--font-body);
-  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 40px}
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:24px 40px}
 h1,h2,h3{font-family:var(--font-display);margin:0;text-wrap:balance}
 .wrap{max-width:1040px;margin:0 auto}
-.top{margin-bottom:24px;max-width:640px}
-.top h1{font-size:30px;letter-spacing:-.01em}
-.top p{margin:6px 0 0;color:var(--muted)}
-.layout{display:grid;grid-template-columns:minmax(0,390px) minmax(0,1fr);gap:36px;align-items:start}
-@media (max-width:860px){.layout{grid-template-columns:minmax(0,1fr)}.phone{margin:0 auto}}
+.top{margin-bottom:20px;max-width:640px}
+.top h1{font-size:28px;letter-spacing:-.01em}
+.top p{margin:4px 0 0;color:var(--muted);font-size:14px}
+.layout{display:grid;grid-template-columns:minmax(0,390px) minmax(0,1fr);gap:40px;align-items:start}
+@media (max-width:860px){.layout{grid-template-columns:minmax(0,1fr)}.phone{margin:0 auto;position:relative!important;top:0!important}}
 
 /* phone */
-.phone{position:relative;width:390px;max-width:100%;height:790px;background:var(--surface);border:9px solid var(--phone);border-radius:38px;display:flex;flex-direction:column;overflow:hidden}
-.appbar{padding:14px 18px 10px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}
+.phone{position:sticky;top:16px;width:390px;max-width:100%;height:780px;height:min(780px,calc(100dvh - 32px));min-height:560px;background:var(--surface);border:9px solid var(--phone);border-radius:38px;display:flex;flex-direction:column;overflow:hidden}
+.appbar{padding:13px 18px 8px;display:flex;align-items:center;justify-content:space-between}
 .brand{font:700 17px var(--font-display);color:var(--denim);letter-spacing:-.01em}
 .brand i{font-style:normal;color:var(--accent)}
-.user{font:500 12px var(--font-mono);color:var(--muted)}
+.rolebar{padding:0 18px 10px;border-bottom:1px solid var(--line)}
+.seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.seg button{border:0;border-right:1px solid var(--line);background:transparent;color:var(--ink);padding:9px 4px;font:500 13px var(--font-body);cursor:pointer}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"]{background:var(--denim);color:var(--surface);font-weight:600}
+.seg.mini button{padding:7px 4px;font-size:12.5px}
 .screen{flex:1;overflow-y:auto;padding:16px 18px 20px;min-height:0}
-.tabs{display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid var(--line);background:var(--surface)}
-.tabs button{border:0;background:none;color:var(--muted);font:500 12px var(--font-body);padding:12px 2px 11px;cursor:pointer;position:relative}
+.tabs{display:grid;border-top:1px solid var(--line);background:var(--surface)}
+.tabs button{border:0;background:none;color:var(--muted);font:500 12.5px var(--font-body);padding:12px 2px 11px;cursor:pointer;position:relative}
 .tabs button[aria-current="true"]{color:var(--ink);font-weight:600}
 .tabs button[aria-current="true"]::before{content:"";position:absolute;left:22%;right:22%;top:0;height:3px;background:var(--accent);border-radius:0 0 3px 3px}
-button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button:focus-visible,select:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
-.screen h2{font-size:20px;margin-bottom:4px}
-.screen h3{font-size:14px;margin:20px 0 8px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.screen h2{font-size:20px;margin-bottom:2px}
+.screen h3{font-size:12.5px;margin:20px 0 6px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-family:var(--font-mono);font-weight:500}
 .sub{color:var(--muted);margin:0 0 14px;font-size:14px}
 .card{background:var(--soft);border-radius:14px;padding:16px}
 .lab{font:500 12px var(--font-mono);color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
@@ -72,65 +77,81 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid 
 .capline{display:flex;justify-content:space-between;font-size:13px;margin-top:14px}
 .mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
 .list{display:flex;flex-direction:column}
-.li{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);font-size:14px}
+.li{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);font-size:14px}
 .li small{display:block;color:var(--muted);font-size:12px}
+.li .r{display:flex;flex-direction:column;align-items:flex-end;gap:6px;text-align:right}
 .li .v{font:600 14px var(--font-mono);white-space:nowrap}
 .pos{color:var(--good)}.neg{color:var(--bad)}
 
-.field{display:flex;flex-direction:column;gap:4px;margin-bottom:12px}
-.field label,.field legend{font-size:13px;font-weight:600}
+.field{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+.fl{font-size:13px;font-weight:600}
+.fl small{font-weight:400;color:var(--muted)}
 select{font:15px var(--font-body);padding:9px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink)}
-fieldset{border:0;padding:0;margin:0 0 12px}
-.chk{display:flex;gap:10px;align-items:center;padding:6px 0;font-size:14px}
+.chk{display:flex;gap:10px;align-items:center;padding:5px 0;font-size:14px}
 .chk input{width:18px;height:18px;accent-color:var(--accent)}
-.est{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 14px;border-radius:12px;background:var(--soft);margin:6px 0 14px;font-size:14px}
-.est b{font:700 22px var(--font-display);color:var(--denim)}
+.est{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;background:var(--soft);margin:4px 0 12px;font-size:13.5px}
+.est b{font:700 26px var(--font-display);color:var(--denim)}
+.hint{margin:8px 0 0;font-size:12.5px;color:var(--muted);text-align:center}
 .btn{background:var(--accent);color:var(--accent-ink);border:0;border-radius:9px;padding:11px 16px;font:600 14px var(--font-body);cursor:pointer;width:100%}
 .btn.sm{width:auto;padding:7px 12px;font-size:13px}
 .btn.sec{background:transparent;color:var(--ink);border:1px solid var(--line)}
 .btn:disabled{opacity:.45;cursor:not-allowed}
-.btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
 .btns .full{grid-column:1/-1}
 
 .tagview{text-align:center}
 .tagview .qrbox{padding:12px;margin:10px auto}
-.code{font:500 20px var(--font-mono);letter-spacing:.08em;margin:4px 0}
-.drops{text-align:left;font-size:14px;margin:14px 0}
-.drops li{margin:3px 0}
+.code{font:500 20px var(--font-mono);letter-spacing:.08em;margin:4px 0 8px}
+.kv{display:flex;justify-content:space-between;gap:12px;font-size:14px;padding:5px 0;border-bottom:1px solid var(--line);text-align:left}
+.kv:last-of-type{border-bottom:0}
+.kv span:first-child{color:var(--muted)}
+.payload{font:400 11.5px var(--font-mono);color:var(--muted);background:var(--soft);border-radius:8px;padding:8px 10px;margin:12px 0;text-align:left;word-break:break-all}
+
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:6px}
+.stat{background:var(--soft);border-radius:10px;padding:10px 12px}
+.stat b{display:block;font:700 22px var(--font-display);color:var(--denim)}
+.stat span{font-size:12px;color:var(--muted)}
 
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .tagcard{position:relative;border:1px solid var(--line);border-radius:6px 14px 14px 6px;padding:12px;display:flex;flex-direction:column;gap:6px;background:var(--surface)}
 .tagcard::after{content:"";position:absolute;top:10px;right:10px;width:9px;height:9px;border-radius:50%;border:1.5px solid var(--line)}
-.tagcard .nm{font:600 15px var(--font-display);padding-right:14px}
+.tagcard .nm{font:600 15px var(--font-display);padding-right:14px;line-height:1.25}
 .tagcard .meta{font-size:12px;color:var(--muted)}
 .price{font:600 13px var(--font-mono)}
 .price s{color:var(--muted);font-weight:400}
-.pill{display:inline-block;font:500 11px var(--font-mono);padding:2px 8px;border-radius:20px;border:1px solid currentColor;width:max-content}
-.pill.like{color:var(--good)}.pill.good{color:var(--denim)}.pill.damaged{color:var(--bad)}.pill.pending{color:var(--warn)}.pill.done{color:var(--good)}
+.pill{display:inline-block;font:500 11px var(--font-mono);padding:2px 8px;border-radius:20px;border:1px solid currentColor;width:max-content;white-space:nowrap}
+.pill.like,.pill.done{color:var(--good)}.pill.good{color:var(--denim)}.pill.damaged,.pill.bad{color:var(--bad)}.pill.pending{color:var(--warn)}
 
 .shift{padding:12px 0;border-bottom:1px solid var(--line);display:flex;gap:10px;justify-content:space-between;align-items:center}
 .shift small{display:block;color:var(--muted);font-size:12px}
-.lock{margin-top:12px;font-size:13px;color:var(--muted);border:1px dashed var(--line);border-radius:10px;padding:10px 12px}
-.tier{display:flex;gap:10px;align-items:flex-start;padding:8px 0;font-size:14px}
+.note{margin-top:12px;font-size:13px;color:var(--muted);border:1px dashed var(--line);border-radius:10px;padding:10px 12px}
+.tier{display:flex;gap:10px;align-items:flex-start;padding:6px 0;font-size:14px}
 .tier .dot{flex:none;width:18px;height:18px;border-radius:50%;border:2px solid var(--line);margin-top:2px}
 .tier.on .dot{background:var(--good);border-color:var(--good)}
-.toast{position:absolute;left:14px;right:14px;bottom:70px;background:var(--denim);color:var(--surface);border-radius:10px;padding:10px 14px;font-size:13px;z-index:5}
-.detail{border:1px solid var(--line);border-radius:12px;padding:14px;margin-top:10px}
-.detail .kv{display:flex;justify-content:space-between;font-size:14px;padding:3px 0}
+.toast{position:absolute;left:14px;right:14px;bottom:66px;background:var(--denim);color:var(--surface);border-radius:10px;padding:10px 14px;font-size:13px;z-index:5}
+.detail{border:1px solid var(--line);border-radius:12px;padding:14px;margin-top:6px}
+.shelf{height:6px;background:var(--line);border-radius:4px;overflow:hidden;margin-top:6px;width:110px}
+.shelf i{display:block;height:100%;background:var(--denim)}
+.shelf i.late{background:var(--warn)}
 
-/* notes */
-.notes{display:flex;flex-direction:column;gap:26px;min-width:0}
-.notes h2{font-size:20px;margin-bottom:8px}
+/* design notes */
+.notes{min-width:0}
+.notes details{border-top:1px solid var(--line);padding:14px 0}
+.notes details:last-child{border-bottom:1px solid var(--line)}
+.notes summary{font:600 18px var(--font-display);cursor:pointer;list-style-position:outside}
+.notes details>*:not(summary){margin-top:10px}
 .notes p{margin:0 0 8px;color:var(--muted);max-width:62ch}
 .tablewrap{overflow-x:auto}
 table{border-collapse:collapse;width:100%;font-size:14px}
-th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line)}
+th,td{text-align:left;padding:8px 12px;border-bottom:1px solid var(--line)}
 th{font:500 12px var(--font-mono);text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
 td.n{font:600 14px var(--font-mono);font-variant-numeric:tabular-nums}
-ol.flow{margin:0;padding-left:20px;max-width:62ch}
-ol.flow li{margin:6px 0}
-ul.rules{margin:0;padding-left:20px;max-width:62ch}
-ul.rules li{margin:6px 0}
+.notes ol,.notes ul{margin:0;padding-left:20px;max-width:62ch}
+.notes li{margin:6px 0}
+.notes code{font:400 13px var(--font-mono);background:var(--soft);padding:1px 6px;border-radius:5px}
+.states{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font:500 12px var(--font-mono)}
+.states span{background:var(--soft);padding:4px 9px;border-radius:6px}
+.states em{font-style:normal;color:var(--muted)}
 @media (prefers-reduced-motion:no-preference){.bar i{transition:width .3s}}
 </style>
 </head>
@@ -138,39 +159,54 @@ ul.rules li{margin:6px 0}
 <div class="wrap">
   <header class="top">
     <h1>Second Life Studio</h1>
-    <p>Clickable prototype of the NTU clothes exchange app. Items, names and balances are sample data. Credit values are proposals for the pilot.</p>
+    <p>Clickable prototype of the NTU clothes exchange app. Names, items and balances are sample data. Switch between the student view and the volunteer desk at the top of the phone.</p>
   </header>
   <div class="layout">
     <div class="phone" id="phone">
-      <div class="appbar"><span class="brand">Second Life <i>Studio</i></span><span class="user">NTU student</span></div>
+      <div class="appbar"><span class="brand">Second Life <i>Studio</i></span></div>
+      <div class="rolebar"><div class="seg mini" role="group" aria-label="Choose a view">
+        <button data-role="student" aria-pressed="true">Student</button>
+        <button data-role="desk" aria-pressed="false">Volunteer desk</button>
+      </div></div>
       <div class="screen" id="screen"></div>
       <nav class="tabs" id="tabs" aria-label="App sections"></nav>
       <div class="toast" id="toast" hidden></div>
     </div>
     <aside class="notes">
-      <section>
-        <h2>How a donation becomes credits</h2>
-        <ol class="flow">
-          <li>The donor picks the item type, fabric and condition, and ticks a short self-check. The app shows the credits on offer.</li>
-          <li>The app issues a QR tag. The donor attaches it and drops the item at North Spine, South Spine or a hall collection point.</li>
-          <li>A volunteer scans the tag and spot-checks the item against the donor's grade. This takes seconds, so nobody sorts a pile by hand.</li>
-          <li>Credits are released only after that check. Good items go to the exchange, damaged ones to upcycling, rejects to a partner.</li>
+      <details open>
+        <summary>How it works</summary>
+        <ol>
+          <li>The student describes the item and ticks a short self-check. The app shows the credits on offer.</li>
+          <li>The app issues a QR tag. The student attaches it and drops the item at North Spine, South Spine or a hall bin.</li>
+          <li>A volunteer scans the tag at the desk and compares the item with the student's grade. This takes seconds, so nobody sorts a pile by hand.</li>
+          <li>Credits are released only after that check. Good items go on the shelf, damaged ones to upcycling, rejects to a partner such as Cloop.</li>
+          <li>Students reserve shelf items with credits, or pay the cash price at the booth.</li>
         </ol>
-      </section>
-      <section>
-        <h2>Credits earned per item</h2>
-        <p>Base credits depend on condition. A material factor lowers them for blends and synthetics, which resell poorly and cannot be recycled yet. Results round up, with a minimum of 1.</p>
+      </details>
+      <details>
+        <summary>Credit rules (proposed)</summary>
+        <p>One table sets both what a donation earns and what the same item costs on the shelf. Condition sets the base. A material factor lowers it for blends and synthetics, which resell poorly and cannot be recycled yet. Results round up, with a minimum of 1.</p>
         <div class="tablewrap"><table id="rules"></table></div>
-      </section>
-      <section>
-        <h2>Guardrails</h2>
-        <ul class="rules">
-          <li>Donation credits are capped at <span id="capTxt" class="mono"></span> per semester, so donating cannot become a way to fund more buying.</li>
-          <li>Items over the cap are still accepted and diverted, but earn no credits.</li>
-          <li>Cash alternative at the North Spine exchange: 1 credit = S$1, so students with little to donate are not excluded.</li>
-          <li>Volunteers earn <span id="volTxt" class="mono"></span> credits per hour. These sit outside the donation cap, and no shifts run in exam weeks.</li>
+        <ul>
+          <li>Donation credits are capped at <span id="capTxt" class="mono"></span> per semester, so donating cannot become a way to fund more buying. Items over the cap are still accepted, but earn nothing.</li>
+          <li>1 credit = S$1 at the booth, so students with little to donate can still pay cash.</li>
+          <li>Volunteers earn <span id="volTxt" class="mono"></span> credits per hour. These sit outside the cap, and no shifts run in exam weeks.</li>
+          <li>Reserved items must be collected within 3 days, or the credits return and the item goes back on the shelf.</li>
         </ul>
-      </section>
+      </details>
+      <details>
+        <summary>Under the hood (proposed design)</summary>
+        <ul>
+          <li><b>Platform:</b> mobile web app opened from the QR poster, no install. Sign-in through NTU single sign-on, so each wallet maps to one student.</li>
+          <li><b>QR tag:</b> carries only the donor's claim, in the form <code>SLS|tag|item|grade|fabric</code>. Credits are decided on the server when the volunteer confirms, so a copied or edited tag cannot mint credits.</li>
+          <li><b>Data kept:</b> tag code, item type, fabric, grade, status, timestamps and a pseudonymous wallet ID. No photos or names.</li>
+          <li><b>Abuse controls:</b> one-time tags, a credit cap, credits only after a check, and rejects earn nothing.</li>
+        </ul>
+        <p>Tag life cycle:</p>
+        <div class="states"><span>Created</span><em>&rarr;</em><span>Checked</span><em>&rarr;</em><span>On shelf</span><em>&rarr;</em><span>Reserved</span><em>&rarr;</em><span>Collected</span></div>
+        <div class="states"><span>Checked</span><em>&rarr;</em><span>Upcycling bin</span><em>or</em><span>Rejected</span><em>&rarr;</em><span>Partner</span></div>
+        <p>An item still on the shelf after 30 days also goes to a partner. The Stock tab on the volunteer desk shows the countdown.</p>
+      </details>
     </aside>
   </div>
 </div>
@@ -178,222 +214,279 @@ ul.rules li{margin:6px 0}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
 (function(){
-  var CFG={cap:15,base:{like:4,good:2,damaged:1},factor:{natural:1,blend:0.75,synth:0.5},vol:2};
-  var COND={like:'Like new',good:'Good, minor wear',damaged:'Damaged, for upcycling'};
-  var CSHORT={like:'Like new',good:'Good',damaged:'Damaged'};
-  var FAB={natural:'Natural fibre (cotton, linen, wool)',blend:'Cotton-poly blend',synth:'Mostly synthetic'};
-  var FSHORT={natural:'Natural',blend:'Blend',synth:'Synthetic'};
-  var CHECKS=['Washed and clean','No stains, holes or odour','Zips and buttons work','Fabric label is readable'];
+  var CFG={cap:15,base:{like:4,good:2,damaged:1},factor:{natural:1,blend:0.75,synth:0.5},vol:2,shelf:30};
+  var COND={like:'Like new',good:'Good',damaged:'Damaged'};
+  var FAB={natural:'Natural',blend:'Blend',synth:'Synthetic'};
+  var CHECKS=['Washed and clean','No stains, holes or odour','Zips and buttons work'];
   var ITEMS=['Top','Bottoms','Dress','Outerwear','Knitwear'];
+  var LOCS=['North Spine','South Spine','Hall collection bin'];
+  var TABS={student:[['wallet','Wallet'],['donate','Donate'],['exchange','Exchange'],['shifts','Shifts']],desk:[['scan','Scan'],['stock','Stock']]};
 
   function calc(c,f){return Math.max(1,Math.ceil(CFG.base[c]*CFG.factor[f]-1e-9));}
   function $(id){return document.getElementById(id);}
+  function find(list,fn){return list.filter(fn)[0];}
 
   var S={
-    tab:'wallet',balance:6,earned:4,hours:3,next:409,
+    role:'student',tab:'wallet',balance:6,earned:4,hours:2,next:409,upcycle:2,partner:1,
     history:[
-      {t:'Donated linen shirt',v:'+2',n:'14 Oct, checked'},
+      {t:'Donated linen shirt',v:'+2',n:'14 Oct'},
       {t:'Sort and wash shift, 2 h',v:'+4',n:'18 Oct'},
-      {t:'Donated denim shorts',v:'+2',n:'20 Oct, checked'},
-      {t:'Took grey hoodie',v:'-2',n:'21 Oct, exchange'}
+      {t:'Donated denim shorts',v:'+2',n:'20 Oct'},
+      {t:'Took grey hoodie',v:'-2',n:'21 Oct'}
     ],
-    pending:[
-      {code:'SLS-0407',item:'Outerwear',cond:'good',fab:'blend',cr:2,mine:false},
-      {code:'SLS-0408',item:'Dress',cond:'like',fab:'natural',cr:4,mine:false}
+    donations:[
+      {code:'SLS-0407',item:'Outerwear',cond:'good',fab:'blend',cr:2,mine:false,loc:'South Spine',status:'awaiting'},
+      {code:'SLS-0408',item:'Dress',cond:'like',fab:'natural',cr:4,mine:false,loc:'North Spine',status:'awaiting'}
     ],
     stock:[
-      {id:1,name:'Denim jacket',cond:'like',fab:'natural'},
-      {id:2,name:'Linen shirt',cond:'good',fab:'natural'},
-      {id:3,name:'Black work trousers',cond:'good',fab:'blend'},
-      {id:4,name:'Wool cardigan',cond:'like',fab:'natural'},
-      {id:5,name:'Plain tee',cond:'good',fab:'natural'},
-      {id:6,name:'Formal blazer',cond:'like',fab:'blend'}
+      {id:1,name:'Denim jacket',cond:'like',fab:'natural',days:9},
+      {id:2,name:'Linen shirt',cond:'good',fab:'natural',days:26},
+      {id:3,name:'Black work trousers',cond:'good',fab:'blend',days:12},
+      {id:4,name:'Wool cardigan',cond:'like',fab:'natural',days:3},
+      {id:5,name:'Plain tee',cond:'good',fab:'natural',days:28},
+      {id:6,name:'Formal blazer',cond:'like',fab:'blend',days:1}
     ],
+    reserved:[],
     shifts:[
       {id:1,name:'Sort and wash',when:'Sat 31 Oct, 10:00 to 12:00',h:2,st:'open'},
       {id:2,name:'Swap day booth',when:'Wed 4 Nov, 12:00 to 14:00',h:2,st:'open'},
       {id:3,name:'Upcycling workshop helper',when:'Fri 6 Nov, 15:00 to 17:00',h:2,st:'open'}
     ],
-    form:{item:'Top',fab:'natural',cond:'good',chk:[false,false,false,false]},
-    tag:null,open:null
+    form:{item:'Top',fab:'natural',cond:'good',chk:[false,false,false],loc:'North Spine'},
+    tagCode:null,open:null
   };
 
-  var tabsDef=[['wallet','Wallet'],['donate','Donate'],['exchange','Exchange'],['volunteer','Volunteer'],['check','Check']];
   var tt=null;
-  function toast(msg){var t=$('toast');t.textContent=msg;t.hidden=false;clearTimeout(tt);tt=setTimeout(function(){t.hidden=true;},2600);}
+  function toast(msg){var t=$('toast');t.textContent=msg;t.hidden=false;clearTimeout(tt);tt=setTimeout(function(){t.hidden=true;},3000);}
   function qr(el,text,size){
     if(!el)return;el.innerHTML='';
     try{new QRCode(el,{text:text,width:size,height:size,colorDark:'#16233A',colorLight:'#FFFFFF',correctLevel:QRCode.CorrectLevel.M});}
     catch(e){el.style.lineHeight='1.3';el.style.color='#16233A';el.textContent=text;}
   }
+  function pill(cls,txt){return '<span class="pill '+cls+'">'+txt+'</span>';}
+  function mine(){return S.donations.filter(function(d){return d.mine;});}
+  function awaiting(){return S.donations.filter(function(d){return d.status==='awaiting';});}
+  function payload(d){return 'SLS|'+d.code+'|'+d.item+'|'+d.cond+'|'+d.fab;}
+  function addHist(t,v,n){S.history.push({t:t,v:v,n:n});}
 
-  /* screens */
+  /* ---------- student views ---------- */
   function walletView(){
     var pct=Math.min(100,Math.round(S.earned/CFG.cap*100));
-    var h='<h2>Wallet</h2><p class="sub">Credits you can spend at any swap booth or the North Spine exchange.</p>'+
+    var h='<h2>Wallet</h2><p class="sub">Credits can be spent on the Exchange tab or at the booth.</p>'+
       '<div class="card"><div class="lab">Credit balance</div><div class="bal">'+S.balance+'<span> credits</span></div>'+
-      '<div class="qrrow"><div class="qrbox" id="wqr"></div><p>Show this code at a swap booth. 1 credit is worth S$1.</p></div></div>'+
-      '<div class="capline"><span>Earned from donations this semester</span><span class="mono">'+S.earned+' / '+CFG.cap+'</span></div>'+
-      '<div class="bar"><i style="width:'+pct+'%"></i></div>'+
-      '<h3>Recent activity</h3><div class="list">';
-    S.history.slice().reverse().forEach(function(r){
+      '<div class="qrrow"><div class="qrbox" id="wqr"></div><p>Show this code at the booth to collect reserved items. 1 credit is worth S$1.</p></div></div>'+
+      '<div class="capline"><span>Donation credits this semester</span><span class="mono">'+S.earned+' / '+CFG.cap+'</span></div>'+
+      '<div class="bar"><i style="width:'+pct+'%"></i></div>';
+    if(S.reserved.length){
+      h+='<h3>Reserved for pickup</h3><div class="list">';
+      S.reserved.forEach(function(r){h+='<div class="li"><div>'+r.name+'<small>Collect within 3 days, or the credits return</small></div>'+pill('pending','Reserved')+'</div>';});
+      h+='</div>';
+    }
+    var md=mine().slice().reverse();
+    if(md.length){
+      h+='<h3>My donations</h3><div class="list">';
+      md.forEach(function(d){
+        var st=d.status==='awaiting'?pill('pending','Awaiting check'):d.status==='credited'?pill('done','Credited'):pill('bad','Not accepted');
+        h+='<div class="li"><div>'+d.item+'<small class="mono">'+d.code+', '+d.loc+'</small></div><div class="r">'+st+
+          (d.status==='awaiting'?'<button class="btn sm sec" data-act="showtag" data-code="'+d.code+'">Show tag</button>':'')+'</div></div>';
+      });
+      h+='</div>';
+    }
+    h+='<h3>Recent activity</h3><div class="list">';
+    S.history.slice().reverse().slice(0,6).forEach(function(r){
       h+='<div class="li"><div>'+r.t+'<small>'+r.n+'</small></div><div class="v '+(r.v.charAt(0)==='+'?'pos':'neg')+'">'+r.v+'</div></div>';
     });
     return h+'</div>';
   }
 
+  function segHtml(key,map,cur){
+    return '<div class="seg" data-seg="'+key+'" role="group">'+Object.keys(map).map(function(k){
+      return '<button data-v="'+k+'" aria-pressed="'+(k===cur)+'">'+map[k]+'</button>';}).join('')+'</div>';
+  }
+
   function donateView(){
-    if(S.tag){
-      var t=S.tag;
-      return '<div class="tagview"><h2>Your drop-off tag</h2><p class="sub">Attach this tag to the item. Credits are released after a volunteer checks it.</p>'+
-        '<div class="qrbox" id="tqr"></div><div class="code">'+t.code+'</div>'+
-        '<span class="pill pending">Waiting for check</span>'+
-        '<ul class="drops"><li>Drop at North Spine or South Spine collection point</li><li>Or at your hall collection bin</li></ul>'+
-        '<div class="est"><span>Credits on offer<br><small class="mono">'+t.item+', '+CSHORT[t.cond]+', '+FSHORT[t.fab]+'</small></span><b>'+t.cr+'</b></div>'+
-        '<button class="btn sec" data-act="again">Donate another item</button></div>';
+    if(S.tagCode){
+      var d=find(S.donations,function(x){return x.code===S.tagCode;});
+      if(d){
+        var st=d.status==='awaiting'?pill('pending','Awaiting check'):d.status==='credited'?pill('done','Credited'):pill('bad','Not accepted');
+        return '<div class="tagview"><h2>Your drop-off tag</h2><p class="sub">Attach it to the item and hand it in. Credits arrive after a volunteer checks the item.</p>'+
+          '<div class="qrbox" id="tqr"></div><div class="code">'+d.code+'</div>'+st+
+          '<div style="margin-top:12px">'+
+          '<div class="kv"><span>Item</span><span>'+d.item+', '+COND[d.cond]+', '+FAB[d.fab]+'</span></div>'+
+          '<div class="kv"><span>Drop off at</span><span>'+d.loc+'</span></div>'+
+          '<div class="kv"><span>Credits if confirmed</span><span class="mono">'+d.cr+'</span></div></div>'+
+          '<div class="payload">Tag data: '+payload(d)+'</div>'+
+          '<div class="btns"><button class="btn sec" data-act="gowallet">Back to wallet</button><button class="btn" data-act="again">Donate another</button></div></div>';
+      }
     }
-    var f=S.form,h='<h2>Donate</h2><p class="sub">Grade your item honestly. A volunteer will spot-check it.</p>';
-    h+='<div class="field"><label for="f-item">Item type</label><select id="f-item" data-f="item">'+ITEMS.map(function(i){return '<option'+(i===f.item?' selected':'')+'>'+i+'</option>';}).join('')+'</select></div>';
-    h+='<div class="field"><label for="f-fab">Fabric</label><select id="f-fab" data-f="fab">'+Object.keys(FAB).map(function(k){return '<option value="'+k+'"'+(k===f.fab?' selected':'')+'>'+FAB[k]+'</option>';}).join('')+'</select></div>';
-    h+='<div class="field"><label for="f-cond">Condition</label><select id="f-cond" data-f="cond">'+Object.keys(COND).map(function(k){return '<option value="'+k+'"'+(k===f.cond?' selected':'')+'>'+COND[k]+'</option>';}).join('')+'</select></div>';
-    h+='<fieldset id="chks"><legend>Self-check</legend>'+CHECKS.map(function(c,i){return '<label class="chk"><input type="checkbox" data-c="'+i+'"'+(f.chk[i]?' checked':'')+'> '+c+'</label>';}).join('')+'</fieldset>';
-    h+='<div class="est"><span id="estTxt"></span><b id="estNum"></b></div><button class="btn" id="mk" data-act="tag">Generate drop-off tag</button>';
+    var f=S.form;
+    var h='<h2>Donate</h2><p class="sub">Describe your item honestly. A volunteer checks it when you hand it in.</p>';
+    h+='<div class="field"><label class="fl" for="f-item">Item type</label><select id="f-item" data-f="item">'+ITEMS.map(function(i){return '<option'+(i===f.item?' selected':'')+'>'+i+'</option>';}).join('')+'</select></div>';
+    h+='<div class="field"><span class="fl">Fabric <small>(see the care label)</small></span>'+segHtml('fab',FAB,f.fab)+'</div>';
+    h+='<div class="field"><span class="fl">Condition</span>'+segHtml('cond',{like:'Like new',good:'Good',damaged:'Damaged'},f.cond)+'</div>';
+    if(f.cond!=='damaged'){
+      h+='<div class="field"><span class="fl">Self-check</span>'+CHECKS.map(function(c,i){return '<label class="chk"><input type="checkbox" data-c="'+i+'"'+(f.chk[i]?' checked':'')+'> '+c+'</label>';}).join('')+'</div>';
+    }
+    h+='<div class="field"><label class="fl" for="f-loc">Drop-off point</label><select id="f-loc" data-f="loc">'+LOCS.map(function(i){return '<option'+(i===f.loc?' selected':'')+'>'+i+'</option>';}).join('')+'</select></div>';
+    h+='<div class="est"><span id="estTxt"></span><b id="estNum"></b></div><button class="btn" id="mk" data-act="tag">Get drop-off tag</button><p class="hint" id="hint"></p>';
     return h;
   }
   function updateEst(){
-    var f=S.form,cr=calc(f.cond,f.fab),left=Math.max(0,CFG.cap-S.earned);
-    var ok=f.cond==='damaged'||f.chk.every(Boolean);
-    var chks=$('chks');if(chks)chks.style.opacity=f.cond==='damaged'?'.5':'1';
     if(!$('estNum'))return;
-    $('estNum').textContent=left===0?'0':String(Math.min(cr,left));
-    $('estTxt').innerHTML=left===0?'Semester cap reached.<br><small>Still accepted, no credits.</small>':
-      (f.cond==='damaged'?'Goes to upcycling.<br>':'Credits on offer.<br>')+'<small class="mono">'+cr+' base-adjusted, '+left+' left under cap</small>';
-    $('mk').disabled=!ok;
+    var f=S.form,cr=calc(f.cond,f.fab),left=Math.max(0,CFG.cap-S.earned),get=Math.min(cr,left);
+    var ok=f.cond==='damaged'||f.chk.every(Boolean),txt;
+    if(left===0)txt='You have reached this semester\'s cap of '+CFG.cap+'. We still take the item, but it earns no credits.';
+    else if(f.cond==='damaged')txt='Goes to the upcycling bin. You earn '+get+' credit after the check. '+left+' left under your cap.';
+    else txt='You earn this after a volunteer checks the item. '+left+' left under your cap of '+CFG.cap+'.';
+    $('estTxt').textContent=txt;$('estNum').textContent=String(get);
+    $('mk').disabled=!ok;$('hint').textContent=ok?'':'Tick the self-check to continue.';
   }
 
   function exchangeView(){
-    var h='<h2>Exchange</h2><p class="sub">Spend credits, or pay the cash price at the North Spine booth.</p><div class="grid">';
-    if(!S.stock.length)h+='<p class="sub">Everything has been taken. New stock arrives after each volunteer check.</p>';
+    var h='<h2>Exchange</h2><p class="sub">You have <b class="mono">'+S.balance+'</b> credits. Reserve an item, or pay the cash price at the booth.</p><div class="grid">';
+    if(!S.stock.length)h+='<p class="sub">The shelf is empty. New items appear after each volunteer check.</p>';
     S.stock.forEach(function(it){
-      var c=CFG.base[it.cond];
-      h+='<div class="tagcard"><div class="nm">'+it.name+'</div><span class="pill '+it.cond+'">'+CSHORT[it.cond]+'</span><div class="meta">'+FSHORT[it.fab]+'</div>'+
-        '<div class="price">'+c+' cr <s>or S$'+c+'</s></div><button class="btn sm" data-act="redeem" data-id="'+it.id+'">Take it</button></div>';
+      var c=calc(it.cond,it.fab);
+      h+='<div class="tagcard"><div class="nm">'+it.name+'</div>'+pill(it.cond,COND[it.cond])+'<div class="meta">'+FAB[it.fab]+'</div>'+
+        '<div class="price">'+c+' cr <s>or S$'+c+'</s></div><button class="btn sm" data-act="reserve" data-id="'+it.id+'">Reserve</button></div>';
     });
     return h+'</div>';
   }
 
-  function volunteerView(){
-    var h='<h2>Volunteer</h2><p class="sub">Each hour earns '+CFG.vol+' credits. Volunteer credits do not count toward the donation cap.</p>'+
+  function shiftsView(){
+    var h='<h2>Shifts</h2><p class="sub">Each hour earns '+CFG.vol+' credits. These do not count toward the donation cap.</p>'+
       '<div class="card"><div class="lab">Hours this semester</div><div class="bal">'+S.hours+'<span> h</span></div>'+
       '<div class="bar"><i style="width:'+Math.min(100,S.hours/10*100)+'%"></i></div></div>'+
       '<h3>Rewards</h3>'+
       '<div class="tier'+(S.hours>=4?' on':'')+'"><span class="dot"></span><span>4 hours: early access to swap days, 30 minutes before doors open</span></div>'+
       '<div class="tier'+(S.hours>=10?' on':'')+'"><span class="dot"></span><span>10 hours: service hours certificate (to be confirmed with the school)</span></div>'+
-      '<h3>Shifts</h3>';
+      '<h3>Upcoming shifts</h3>';
     S.shifts.forEach(function(s){
       var b=s.st==='open'?'<button class="btn sm" data-act="book" data-id="'+s.id+'">Book</button>':
-            s.st==='booked'?'<button class="btn sm sec" data-act="attend" data-id="'+s.id+'">Mark attended (demo)</button>':
-            '<span class="pill done">Done</span>';
+            s.st==='booked'?'<div style="text-align:right">'+pill('pending','Booked')+'<br><button class="btn sm sec" style="margin-top:6px" data-act="attend" data-id="'+s.id+'">Demo: confirm hours</button></div>':
+            pill('done','Done');
       h+='<div class="shift"><div>'+s.name+'<small>'+s.when+', '+s.h+' h</small></div>'+b+'</div>';
     });
-    return h+'<div class="lock">Exam weeks: no shifts are scheduled, so volunteering never competes with revision.</div>';
+    return h+'<div class="note">A coordinator confirms hours after each shift. No shifts run in exam weeks, so volunteering never competes with revision.</div>';
   }
 
-  function checkView(){
-    var h='<h2>Volunteer check</h2><p class="sub">Scan a tag at the drop-off point, compare the item with the donor\'s grade, then decide.</p>';
+  /* ---------- volunteer desk views ---------- */
+  function scanView(){
+    var h='<h2>Scan</h2><p class="sub">Scan the QR tag, compare the item with the donor\'s grade, then decide.</p>';
     if(S.open){
-      var t=S.pending.filter(function(p){return p.code===S.open;})[0];
+      var t=find(S.donations,function(p){return p.code===S.open;});
       if(t){
-        h+='<div class="detail"><div class="code" style="font-size:17px">'+t.code+'</div>'+
+        return h+'<div class="detail"><div class="code" style="font-size:17px;margin-bottom:4px">'+t.code+'</div>'+
           '<div class="kv"><span>Item</span><span>'+t.item+'</span></div>'+
-          '<div class="kv"><span>Donor graded</span><span><span class="pill '+t.cond+'">'+CSHORT[t.cond]+'</span></span></div>'+
-          '<div class="kv"><span>Fabric</span><span>'+FSHORT[t.fab]+'</span></div>'+
+          '<div class="kv"><span>Donor graded</span><span>'+pill(t.cond,COND[t.cond])+'</span></div>'+
+          '<div class="kv"><span>Fabric</span><span>'+FAB[t.fab]+'</span></div>'+
+          '<div class="kv"><span>Handed in at</span><span>'+t.loc+'</span></div>'+
           '<div class="kv"><span>Credits if confirmed</span><span class="mono">'+t.cr+'</span></div>'+
           '<div class="btns"><button class="btn" data-act="confirm">Confirm grade</button>'+
           '<button class="btn sec" data-act="down"'+(t.cond==='damaged'?' disabled':'')+'>Lower one grade</button>'+
-          '<button class="btn sec full" data-act="reject">Reject, send to partner</button>'+
-          '<button class="btn sec full" data-act="close">Back to list</button></div></div>';
-        return h;
+          '<button class="btn sec full" data-act="reject">Reject and send to partner</button>'+
+          '<button class="btn sec full" data-act="close">Back to list</button></div></div>'+
+          '<p class="hint">Credits are set here when you confirm, not read from the QR code.</p>';
       }
     }
-    h+='<h3>Waiting for check</h3><div class="list">';
-    if(!S.pending.length)h+='<p class="sub">Nothing waiting. Donated tags appear here.</p>';
-    S.pending.forEach(function(p){
-      h+='<div class="li"><div><span class="mono">'+p.code+'</span><small>'+p.item+', '+CSHORT[p.cond]+', '+FSHORT[p.fab]+'</small></div><button class="btn sm" data-act="open" data-code="'+p.code+'">Scan</button></div>';
+    var a=awaiting();
+    h+='<h3>Awaiting check ('+a.length+')</h3><div class="list">';
+    if(!a.length)h+='<p class="sub">Nothing waiting. Tags from the Donate tab appear here.</p>';
+    a.forEach(function(p){
+      h+='<div class="li"><div><span class="mono">'+p.code+'</span><small>'+p.item+', '+COND[p.cond]+', '+FAB[p.fab]+'</small></div><button class="btn sm" data-act="open" data-code="'+p.code+'">Scan</button></div>';
     });
     return h+'</div>';
   }
 
-  function render(){
-    var v={wallet:walletView,donate:donateView,exchange:exchangeView,volunteer:volunteerView,check:checkView}[S.tab]();
-    $('screen').innerHTML=v;
-    $('tabs').innerHTML=tabsDef.map(function(t){return '<button data-tab="'+t[0]+'"'+(S.tab===t[0]?' aria-current="true"':'')+'>'+t[1]+'</button>';}).join('');
-    if(S.tab==='wallet')qr($('wqr'),'SLS|WALLET|U-0293',76);
-    if(S.tab==='donate'){
-      if(S.tag)qr($('tqr'),'SLS|'+S.tag.code+'|'+S.tag.cond+'|'+S.tag.fab+'|'+S.tag.cr+'cr',150);
-      else updateEst();
-    }
+  function stockView(){
+    var h='<h2>Stock</h2><p class="sub">Items on the shelf have '+CFG.shelf+' days to find an owner, then go to a partner.</p>'+
+      '<div class="stats"><div class="stat"><b>'+S.stock.length+'</b><span>On shelf</span></div><div class="stat"><b>'+S.upcycle+'</b><span>Upcycling</span></div><div class="stat"><b>'+S.partner+'</b><span>To partner</span></div></div>'+
+      '<h3>Shelf countdown</h3><div class="list">';
+    S.stock.slice().sort(function(a,b){return b.days-a.days;}).forEach(function(it){
+      var left=CFG.shelf-it.days,late=left<=5;
+      h+='<div class="li"><div>'+it.name+'<small>'+COND[it.cond]+', '+FAB[it.fab]+'</small></div><div class="r"><span class="mono" style="font-size:13px">'+left+' days left</span><div class="shelf"><i class="'+(late?'late':'')+'" style="width:'+Math.round(it.days/CFG.shelf*100)+'%"></i></div></div></div>';
+    });
+    return h+'</div>';
   }
 
-  /* actions */
-  function addHist(t,v,n){S.history.push({t:t,v:v,n:n});}
+  /* ---------- render ---------- */
+  var VIEWS={wallet:walletView,donate:donateView,exchange:exchangeView,shifts:shiftsView,scan:scanView,stock:stockView};
+  function render(keepScroll){
+    var sc=$('screen'),y=keepScroll?sc.scrollTop:0;
+    sc.innerHTML=VIEWS[S.tab]();
+    var tabs=TABS[S.role];
+    $('tabs').style.gridTemplateColumns='repeat('+tabs.length+',1fr)';
+    $('tabs').innerHTML=tabs.map(function(t){return '<button data-tab="'+t[0]+'"'+(S.tab===t[0]?' aria-current="true"':'')+'>'+t[1]+'</button>';}).join('');
+    document.querySelectorAll('[data-role]').forEach(function(b){b.setAttribute('aria-pressed',String(b.getAttribute('data-role')===S.role));});
+    if(S.tab==='wallet')qr($('wqr'),'SLS|U-0293'+(S.reserved.length?'|'+S.reserved.map(function(r){return r.code;}).join(','):''),76);
+    if(S.tab==='donate'){
+      if(S.tagCode){var d=find(S.donations,function(x){return x.code===S.tagCode;});if(d)qr($('tqr'),payload(d),150);}
+      else updateEst();
+    }
+    sc.scrollTop=y;
+  }
+
+  /* ---------- actions ---------- */
   var act={
     tag:function(){
       var f=S.form,code='SLS-0'+(S.next++);
-      var cr=calc(f.cond,f.fab);
-      S.pending.push({code:code,item:f.item,cond:f.cond,fab:f.fab,cr:cr,mine:true});
-      S.tag={code:code,item:f.item,cond:f.cond,fab:f.fab,cr:Math.min(cr,Math.max(0,CFG.cap-S.earned))};
-      render();
+      S.donations.push({code:code,item:f.item,cond:f.cond,fab:f.fab,cr:Math.min(calc(f.cond,f.fab),Math.max(0,CFG.cap-S.earned)),mine:true,loc:f.loc,status:'awaiting'});
+      S.tagCode=code;render();
     },
-    again:function(){S.tag=null;S.form={item:'Top',fab:'natural',cond:'good',chk:[false,false,false,false]};render();},
-    redeem:function(el){
-      var id=+el.getAttribute('data-id'),it=S.stock.filter(function(s){return s.id===id;})[0];
-      if(!it)return;var c=CFG.base[it.cond];
-      if(S.balance<c){toast('Not enough credits. Pay S$'+c+' at the booth or volunteer for more.');return;}
+    again:function(){S.tagCode=null;S.form={item:'Top',fab:'natural',cond:'good',chk:[false,false,false],loc:'North Spine'};render();},
+    gowallet:function(){S.tagCode=null;S.tab='wallet';render();},
+    showtag:function(el){S.tagCode=el.getAttribute('data-code');S.tab='donate';render();},
+    reserve:function(el){
+      var id=+el.getAttribute('data-id'),it=find(S.stock,function(s){return s.id===id;});
+      if(!it)return;var c=calc(it.cond,it.fab);
+      if(S.balance<c){toast('You need '+c+' credits. Pay S$'+c+' at the booth, or pick up a shift.');return;}
       S.balance-=c;S.stock=S.stock.filter(function(s){return s.id!==id;});
-      addHist('Took '+it.name.toLowerCase(),'-'+c,'exchange');render();toast('Added to your pickup list. Collect at the booth.');
+      S.reserved.push({name:it.name,code:'PU-'+it.id});
+      addHist('Reserved '+it.name.toLowerCase(),'-'+c,'today');render();toast('Reserved. Show your wallet code at the booth within 3 days.');
     },
-    book:function(el){var s=S.shifts.filter(function(x){return x.id===+el.getAttribute('data-id');})[0];s.st='booked';render();toast('Shift booked.');},
+    book:function(el){var s=find(S.shifts,function(x){return x.id===+el.getAttribute('data-id');});s.st='booked';render(true);toast('Shift booked.');},
     attend:function(el){
-      var s=S.shifts.filter(function(x){return x.id===+el.getAttribute('data-id');})[0];
+      var s=find(S.shifts,function(x){return x.id===+el.getAttribute('data-id');});
       s.st='done';S.hours+=s.h;S.balance+=s.h*CFG.vol;
-      addHist(s.name+' shift, '+s.h+' h','+'+s.h*CFG.vol,'volunteer');render();toast('+'+s.h*CFG.vol+' credits added.');
+      addHist(s.name+' shift, '+s.h+' h','+'+s.h*CFG.vol,'today');render(true);toast('Hours confirmed. +'+s.h*CFG.vol+' credits.');
     },
     open:function(el){S.open=el.getAttribute('data-code');render();},
     close:function(){S.open=null;render();},
     confirm:function(){
-      var t=S.pending.filter(function(p){return p.code===S.open;})[0];if(!t)return;
-      var grant=Math.min(t.cr,Math.max(0,CFG.cap-S.earned)),msg;
-      if(t.mine){S.earned+=grant;S.balance+=grant;addHist('Donated '+t.item.toLowerCase(),'+'+grant,'checked, '+CSHORT[t.cond].toLowerCase());
-        if(S.tag&&S.tag.code===t.code)S.tag=null;
-        msg=grant+' credits released to the donor.';}
-      else msg=t.cr+' credits released to the donor.';
-      if(t.cond==='damaged')msg+=' Item goes to upcycling.';
-      else{S.stock.push({id:Date.now(),name:t.item+(t.cond==='like'?'':' (used)'),cond:t.cond,fab:t.fab});msg+=' Item added to the exchange.';}
-      S.pending=S.pending.filter(function(p){return p.code!==t.code;});S.open=null;render();toast(msg);
+      var t=find(S.donations,function(p){return p.code===S.open;});if(!t)return;
+      var grant=Math.min(calc(t.cond,t.fab),Math.max(0,CFG.cap-S.earned)),msg;
+      t.cr=t.mine?grant:calc(t.cond,t.fab);t.status='credited';
+      if(t.mine){S.earned+=grant;S.balance+=grant;addHist('Donated '+t.item.toLowerCase(),'+'+grant,'today');}
+      msg=(t.mine?grant:t.cr)+' credits released to the donor. ';
+      if(t.cond==='damaged'){S.upcycle++;msg+='Item goes to the upcycling bin.';}
+      else{S.stock.push({id:Date.now(),name:t.item+(t.cond==='like'?'':' (pre-loved)'),cond:t.cond,fab:t.fab,days:0});msg+='Item is on the shelf.';}
+      S.open=null;render();toast(msg);
     },
     down:function(){
-      var t=S.pending.filter(function(p){return p.code===S.open;})[0];if(!t)return;
-      t.cond=t.cond==='like'?'good':'damaged';t.cr=calc(t.cond,t.fab);render();toast('Grade lowered. Credits updated.');
+      var t=find(S.donations,function(p){return p.code===S.open;});if(!t)return;
+      t.cond=t.cond==='like'?'good':'damaged';t.cr=calc(t.cond,t.fab);render();toast('Grade lowered to '+COND[t.cond].toLowerCase()+'. Credits updated.');
     },
     reject:function(){
-      var t=S.pending.filter(function(p){return p.code===S.open;})[0];if(!t)return;
-      S.pending=S.pending.filter(function(p){return p.code!==t.code;});
-      if(S.tag&&S.tag.code===t.code)S.tag=null;
-      S.open=null;render();toast('Sent to a partner such as Cloop. No credits.');
+      var t=find(S.donations,function(p){return p.code===S.open;});if(!t)return;
+      t.status='rejected';t.cr=0;S.partner++;S.open=null;render();toast('Sent to a partner such as Cloop. No credits.');
     }
   };
 
   document.addEventListener('click',function(e){
+    var rb=e.target.closest('[data-role]');
+    if(rb){S.role=rb.getAttribute('data-role');S.tab=TABS[S.role][0][0];S.open=null;render();return;}
+    var sb=e.target.closest('[data-seg] button');
+    if(sb){S.form[sb.parentNode.getAttribute('data-seg')]=sb.getAttribute('data-v');render(true);return;}
     var tb=e.target.closest('[data-tab]');
-    if(tb){S.tab=tb.getAttribute('data-tab');S.open=null;render();return;}
+    if(tb){S.tab=tb.getAttribute('data-tab');S.open=null;if(S.tab!=='donate')S.tagCode=null;render();return;}
     var a=e.target.closest('[data-act]');
     if(a&&!a.disabled&&act[a.getAttribute('data-act')])act[a.getAttribute('data-act')](a);
   });
   document.addEventListener('change',function(e){
     var el=e.target;
-    if(el.hasAttribute&&el.hasAttribute('data-f')){S.form[el.getAttribute('data-f')]=el.value;updateEst();}
-    else if(el.hasAttribute&&el.hasAttribute('data-c')){S.form.chk[+el.getAttribute('data-c')]=el.checked;updateEst();}
+    if(!el.hasAttribute)return;
+    if(el.hasAttribute('data-f')){S.form[el.getAttribute('data-f')]=el.value;updateEst();}
+    else if(el.hasAttribute('data-c')){S.form.chk[+el.getAttribute('data-c')]=el.checked;updateEst();}
   });
 
   /* rules table */
